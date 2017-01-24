@@ -1,0 +1,12 @@
+{
+  "name": "woodpecker",
+  "version": "0.1.0",
+  "description": "Worker manager",
+  "main": "index.js",
+  "repository": {
+    "url": "git@github.com:dolftax/woodpecker.git",
+    "type": "git"
+  },
+  "author": "Jaipradeesh Janarthanan <jaipradeesh@gmail.com>",
+  "license": "GPL"
+}
