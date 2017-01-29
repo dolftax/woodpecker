@@ -9,13 +9,20 @@ let config = {
   },
   woodpecker: {
     // 3 GB / 10 (Number of workers + master) in bytes
-    maxRssSize: 322122547,
+    maxRssSize: 32212254,
     refreshInterval: 1000
   }
 }
 
 let entry = function () {
   http.createServer(function (request, response) {
+    // Allocate memory x per request which is reachable by GC
+    let memAlloc = []
+    for (let i = 0; i < 6e4; i++) {
+      memAlloc.push(new Buffer(1))
+      new Buffer(Buffer.poolSize - 2)
+    }
+
     response.writeHead(200, { 'Content-Type': 'application/json' })
     response.write(JSON.stringify({message: `I\'m from worker ${cluster.worker.id}`}))
     response.end()

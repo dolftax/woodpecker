@@ -35,27 +35,25 @@ woodpecker.fork = () => {
 
 // Monitor function watches for RSS size
 woodpecker.monitor = (worker, maxRssSize) => {
-  let timeout
   // There is no direct implementation to get memoryUsage of a worker process
   // Read more here - https://github.com/nodejs/help/issues/469
-  let currentRss = execSync(`awk '/Rss:/{ sum += $2 } END { print sum }' /proc/${worker.process.pid}/smaps`)
+  let currentRss = execSync(`awk '/Rss:/{ sum += $2 } END { print sum }' /proc/${worker.process.pid}/smaps`).toString().trim()
 
   // Check if process RSS is more than defined max value (in bytes)
   if (currentRss >= maxRssSize) {
     // Gracefully disconnect the worker from master
-    worker.disconnect(woodpecker.fork)
+    worker.disconnect()
 
     // Force kill the worker after 4000 ms if not disconnected
-    timeout = setTimeout(() => {
-      worker.kill()
-      woodpecker.fork()
-      console.log(`Worker {worker.id} killed | RSS {currentRss}`)
+    setTimeout(() => {
+      worker.kill('SIGTERM')
+      console.log(`Worker ${worker.id} killed | RSS ${currentRss}`)
     }, 4000)
 
     // If worker disconnects graccefully, clear the `force kill` timeout
     worker.on('disconnect', () => {
-      console.log(`Worker {worker.id} disconnected | RSS {currentRss}`)
-      clearTimeout(timeout)
+      woodpecker.fork()
+      console.log(`Worker ${worker.id} disconnected | RSS ${currentRss}`)
     })
   }
 }
