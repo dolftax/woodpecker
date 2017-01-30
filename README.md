@@ -15,4 +15,18 @@ Instagram Engineering team wrote a neat article on dismissing garbage colletion 
 
 ## Benchmarks
 
-TBD. Tentative plan is to send 10k concurrent requests to the server and see how it performs with GC enabled/disabled.
+#### Woodpecker run
+
+maxRssSize: 307200,
+stats: {
+  statuses: { '200': 10000 },
+  min: 255,
+  max: 1297,
+  avg: 424.2977999999997,
+  count: 10000,
+  rate: 9.421882699444769,
+  start: 1485696911427,
+  total_time: 1061359
+ }
+
+#### With GC run

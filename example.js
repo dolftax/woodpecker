@@ -8,9 +8,9 @@ let config = {
     port: 8080
   },
   woodpecker: {
-    // 3 GB / 10 (Number of workers + master) in bytes
+    // 3 GB / 100 (Number of workers + master) in bytes
     maxRssSize: 32212254,
-    refreshInterval: 1000
+    refreshInterval: 5000
   }
 }
 
@@ -18,7 +18,7 @@ let entry = function () {
   http.createServer(function (request, response) {
     // Allocate memory x per request which is reachable by GC
     let memAlloc = []
-    for (let i = 0; i < 6e4; i++) {
+    for (let i = 0; i < 6e6; i++) {
       memAlloc.push(new Buffer(1))
       new Buffer(Buffer.poolSize - 2)
     }
