@@ -2,7 +2,7 @@
   "name": "woodpecker",
   "version": "0.1.0",
   "description": "Worker manager",
-  "main": "index.js",
+  "main": "test.js",
   "repository": {
     "url": "git@github.com:dolftax/woodpecker.git",
     "type": "git"
